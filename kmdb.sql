@@ -117,6 +117,7 @@ DROP TABLE IF EXISTS movies;
 DROP TABLE IF EXISTS studios;
 DROP TABLE IF EXISTS actors;
 DROP TABLE IF EXISTS characters;
+DROP TABLE IF EXISTS casts;
 
 -- Create new tables, according to your domain model
 -- TODO!
@@ -141,9 +142,14 @@ CREATE TABLE actors (
 
 CREATE TABLE characters (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT,
+    name TEXT
+);
+
+CREATE TABLE casts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    movie_id INTEGER,
     actor_id INTEGER,
-    movie_id INTEGER
+    character_id INTEGER
 );
 
 -- Insert data into your database that reflects the sample data shown above
@@ -184,7 +190,58 @@ VALUES
 'Warner Bros.'
 );
 
+INSERT INTO actors(
+    name
+)
+VALUES
+('Christian Bale'),
+('Michael Caine'),
+('Liam Neeson'),
+('Katie Holmes'),
+('Gary Oldman'),
+('Heath Ledger'),
+('Aaron Eckhart'),
+('Maggie Gyllenhaal'),
+('Tom Hardy'),
+('Joseph Gordon-Levitt'),
+('Anne Hathaway');
 
+INSERT INTO characters (
+    name
+)
+VALUES
+('Bruce Wayne'),
+('Alfred'),
+("Ra's AL Ghul"),
+('Rachel Dawes'),
+('Commissioner Gordon'),
+('Joker'),
+('Harvey Dent'),
+('Bane'),
+('John Blake'),
+('Selina Kyle');
+
+INSERT INTO casts(
+    movie_id,
+    actor_id,
+    character_id
+)
+VALUES
+(1,1,1),
+(1,2,2),
+(1,3,3),
+(1,4,4),
+(1,5,5),
+(2,1,1),
+(2,6,6),
+(2,7,7),
+(2,2,2),
+(2,8,4),
+(3,1,1),
+(3,5,5),
+(3,9,8),
+(3,10,9),
+(3,11,10);
 
 -- Prints a header for the movies output
 .print "Movies"
@@ -206,3 +263,7 @@ FROM movies INNER JOIN studios ON movies.studio_id = studios.id;
 
 -- The SQL statement for the cast output
 -- TODO!
+SELECT movies.title, actors.name, characters.name
+FROM movies INNER JOIN casts ON movies.id = casts.movie_id
+INNER JOIN actors ON actors.id = casts.actor_id
+INNER JOIN characters ON characters.id = casts.character_id;
